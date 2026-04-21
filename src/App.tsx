@@ -94,6 +94,7 @@ function getTotalTimeParts(fromDate: string) {
 export default function LoveOnePager() {
   const [tick, setTick] = useState(Date.now());
   const [countdownMode, setCountdownMode] = useState<"split" | "total">("split");
+  const [isBirthdayCardFlipped, setIsBirthdayCardFlipped] = useState(false);
 
   useEffect(() => {
     const interval = window.setInterval(() => setTick(Date.now()), 1000);
@@ -356,14 +357,35 @@ export default function LoveOnePager() {
           </article>
         </section>
 
-        <section className="rounded-[1.6rem] border border-[#ead9d8] bg-[#f1dfdf] px-6 py-5 text-center shadow-sm">
-          <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-6">
-            <Heart className="h-12 w-12 fill-current text-[#e18f8f]" />
-            <p className="font-serif text-3xl text-[#5d4643] md:text-4xl">
-              Schatziiiiii, alles gute zum Geburtstag!
-            </p>
+        <section
+          className="cursor-pointer [perspective:1200px]"
+          onClick={() => setIsBirthdayCardFlipped((prev) => !prev)}
+        >
+          <div
+            className={`relative min-h-[180px] rounded-[1.6rem] transition-transform duration-700 [transform-style:preserve-3d] ${
+              isBirthdayCardFlipped ? "[transform:rotateY(180deg)]" : ""
+            }`}
+          >
+            <div className="absolute inset-0 rounded-[1.6rem] border border-[#ead9d8] bg-[#f1dfdf] px-6 py-5 text-center shadow-sm [backface-visibility:hidden]">
+              <div className="flex h-full flex-col items-center justify-center gap-3 md:flex-row md:gap-6">
+                <Heart className="h-12 w-12 fill-current text-[#e18f8f]" />
+                <div>
+                  <p className="font-serif text-3xl text-[#5d4643] md:text-4xl">
+                    Schatziiiiii, alles gute zum Geburtstag!
+                  </p>
+                  <p className="mt-3 text-sm text-[#9d7b76]">Tippe auf die Karte 💖</p>
+                </div>
+              </div>
+              <div className="mt-3 text-[#d08a8b]">♡</div>
+            </div>
+
+            <div className="absolute inset-0 rounded-[1.6rem] border border-[#ead9d8] bg-[#f7e9ea] px-6 py-5 text-center shadow-sm [backface-visibility:hidden] [transform:rotateY(180deg)]">
+              <div className="flex h-full flex-col items-center justify-center gap-4">
+                <Heart className="h-14 w-14 fill-current text-[#e18f8f]" />
+                <p className="font-serif text-4xl text-[#5d4643] md:text-5xl">Ich liebe dich ♡</p>
+              </div>
+            </div>
           </div>
-          <div className="mt-3 text-[#d08a8b]">♡</div>
         </section>
       </div>
     </div>
