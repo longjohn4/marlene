@@ -193,7 +193,7 @@ export default function LoveOnePager() {
         >
           <div className="mb-5 flex items-center justify-center gap-2 font-serif text-3xl text-[#5a423e]">
             <Heart className="h-5 w-5 text-[#ca8886]" />
-            <span>Unsere gemeinsame Zeit</span>
+            <span>Du &amp; Ich seit</span>
           </div>
 
           <div className="mb-4 text-center text-sm text-[#8b6f69]">
@@ -251,11 +251,11 @@ export default function LoveOnePager() {
           )}
         </section>
 
-        <section className="grid gap-5 lg:grid-cols-3">
+        <section className="grid gap-5 lg:grid-cols-2">
           <article className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm">
             <div className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#4d3835]">
               <User className="h-5 w-5 text-[#c47a7b]" />
-              <span>Über Marlene</span>
+              <span>Marlene</span>
             </div>
             <div className="space-y-5 text-[#4f403d]">
               <div className="flex gap-3">
@@ -268,7 +268,6 @@ export default function LoveOnePager() {
               <div className="flex gap-3">
                 <Sparkles className="mt-1 h-5 w-5 text-[#b87a78]" />
                 <div>
-                  <p className="font-medium">Das macht dich besonders</p>
                   <p className="leading-relaxed text-[#6b5a56]">{marlene.special}</p>
                 </div>
               </div>
@@ -284,21 +283,6 @@ export default function LoveOnePager() {
               {marlene.likes.map((item) => (
                 <div key={item} className="flex items-start gap-3">
                   <Heart className="mt-1 h-4 w-4 shrink-0 fill-current text-[#d99293]" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm">
-            <div className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#4d3835]">
-              <Dumbbell className="h-5 w-5 text-[#c47a7b]" />
-              <span>Deine Hobbies</span>
-            </div>
-            <div className="space-y-5 text-[#4f403d]">
-              {marlene.hobbies.map((item) => (
-                <div key={item} className="flex items-center gap-3 text-xl">
-                  <Sparkles className="h-4 w-4 text-[#c47a7b]" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -376,7 +360,7 @@ export default function LoveOnePager() {
           <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-6">
             <Heart className="h-12 w-12 fill-current text-[#e18f8f]" />
             <p className="font-serif text-3xl text-[#5d4643] md:text-4xl">
-              Das schönste, was mir im Leben passiert ist, bist du.
+              Schatziiiiii, alles gute zum Geburtstag!
             </p>
           </div>
           <div className="mt-3 text-[#d08a8b]">♡</div>
