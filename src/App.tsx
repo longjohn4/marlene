@@ -7,7 +7,7 @@ import {
   Cake,
   CalendarDays,
   Dumbbell,
-  HouseHeart,
+  Home,
 } from "lucide-react";
 
 const HEADER_IMAGE = "/marlene-daniel.jpg";
@@ -130,6 +130,11 @@ export default function LoveOnePager() {
     )
     .sort((a, b) => a.days - b.days);
 
+  console.assert(typeof together.years === "number", "years should be a number");
+  console.assert(typeof together.seconds === "number", "seconds should be a number");
+  console.assert(daysUntilNextAnnual(relationshipStart) !== null, "anniversary should be calculable");
+  console.assert(highlights.length >= 1, "highlights should exist");
+
   return (
     <div className="min-h-screen bg-[#f3efec] px-4 py-8 text-[#3c302d] md:px-8">
       <div className="mx-auto max-w-6xl space-y-6">
@@ -182,9 +187,7 @@ export default function LoveOnePager() {
                 <div className="text-5xl md:text-6xl font-serif font-bold tracking-tight text-[#c47a7b]">
                   {value}
                 </div>
-                <div className="mt-3 text-sm uppercase tracking-[0.22em] text-[#6a5551]">
-                  {label}
-                </div>
+                <div className="mt-3 text-sm uppercase tracking-[0.22em] text-[#6a5551]">{label}</div>
               </div>
             ))}
           </div>
@@ -269,7 +272,7 @@ export default function LoveOnePager() {
               </div>
 
               <div className="text-center text-[#7a605b]">
-                <HouseHeart className="mx-auto mb-3 h-20 w-20 text-[#9b6c66]" />
+                <Home className="mx-auto mb-3 h-20 w-20 text-[#9b6c66]" />
                 <p className="text-2xl leading-snug">Ein Zuhause.</p>
                 <p className="text-2xl leading-snug">Eine Familie.</p>
                 <p className="text-2xl leading-snug">Wir.</p>
