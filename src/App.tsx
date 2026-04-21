@@ -69,8 +69,31 @@ function daysUntilNextAnnual(dateString: string): number | null {
   return Math.ceil((next.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 }
 
+function getTotalTimeParts(fromDate: string) {
+  const start = new Date(fromDate);
+  const now = new Date();
+  const diffMs = now.getTime() - start.getTime();
+
+  if (Number.isNaN(start.getTime()) || diffMs < 0) {
+    return {
+      totalDays: 0,
+      totalHours: 0,
+      totalMinutes: 0,
+      totalSeconds: 0,
+    };
+  }
+
+  return {
+    totalDays: Math.floor(diffMs / (1000 * 60 * 60 * 24)),
+    totalHours: Math.floor(diffMs / (1000 * 60 * 60)),
+    totalMinutes: Math.floor(diffMs / (1000 * 60)),
+    totalSeconds: Math.floor(diffMs / 1000),
+  };
+}
+
 export default function LoveOnePager() {
   const [tick, setTick] = useState(Date.now());
+  const [countdownMode, setCountdownMode] = useState<"split" | "total">("split");
 
   useEffect(() => {
     const interval = window.setInterval(() => setTick(Date.now()), 1000);
@@ -103,6 +126,7 @@ export default function LoveOnePager() {
   };
 
   const together = useMemo(() => getDiffParts(relationshipStart), [tick]);
+  const totals = useMemo(() => getTotalTimeParts(relationshipStart), [tick]);
 
   const highlights = [
     {
@@ -163,34 +187,68 @@ export default function LoveOnePager() {
           </div>
         </section>
 
-        <section className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm">
+        <section
+          className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm transition hover:shadow-md cursor-pointer"
+          onClick={() => setCountdownMode((prev) => (prev === "split" ? "total" : "split"))}
+        >
           <div className="mb-5 flex items-center justify-center gap-2 font-serif text-3xl text-[#5a423e]">
             <Heart className="h-5 w-5 text-[#ca8886]" />
             <span>Unsere gemeinsame Zeit</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-6 md:gap-0">
-            {[
-              [together.years, "Jahre"],
-              [together.months, "Monate"],
-              [together.days, "Tage"],
-              [together.hours, "Stunden"],
-              [together.minutes, "Minuten"],
-              [together.seconds, "Sekunden"],
-            ].map(([value, label], index) => (
-              <div
-                key={String(label)}
-                className={`flex flex-col items-center justify-center rounded-2xl py-3 text-center md:rounded-none ${
-                  index < 5 ? "md:border-r md:border-[#eadfda]" : ""
-                }`}
-              >
-                <div className="text-5xl md:text-6xl font-serif font-bold tracking-tight text-[#c47a7b]">
-                  {value}
-                </div>
-                <div className="mt-3 text-sm uppercase tracking-[0.22em] text-[#6a5551]">{label}</div>
-              </div>
-            ))}
+          <div className="mb-4 text-center text-sm text-[#8b6f69]">
+            Tippe auf den Countdown für Gesamtwerte
           </div>
+
+          {countdownMode === "split" ? (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-6 md:gap-0">
+              {[
+                [together.years, "Jahre"],
+                [together.months, "Monate"],
+                [together.days, "Tage"],
+                [together.hours, "Stunden"],
+                [together.minutes, "Minuten"],
+                [together.seconds, "Sekunden"],
+              ].map(([value, label], index) => (
+                <div
+                  key={String(label)}
+                  className={`flex flex-col items-center justify-center rounded-2xl py-3 text-center md:rounded-none ${
+                    index < 5 ? "md:border-r md:border-[#eadfda]" : ""
+                  }`}
+                >
+                  <div className="text-5xl md:text-6xl font-serif font-bold tracking-tight text-[#c47a7b]">
+                    {value}
+                  </div>
+                  <div className="mt-3 text-sm uppercase tracking-[0.22em] text-[#6a5551]">
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-0">
+              {[
+                [totals.totalDays, "Gesamt-Tage"],
+                [totals.totalHours, "Gesamt-Stunden"],
+                [totals.totalMinutes, "Gesamt-Minuten"],
+                [totals.totalSeconds, "Gesamt-Sekunden"],
+              ].map(([value, label], index) => (
+                <div
+                  key={String(label)}
+                  className={`flex flex-col items-center justify-center rounded-2xl py-3 text-center md:rounded-none ${
+                    index < 3 ? "md:border-r md:border-[#eadfda]" : ""
+                  }`}
+                >
+                  <div className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#c47a7b] px-2 break-all">
+                    {value}
+                  </div>
+                  <div className="mt-3 text-sm uppercase tracking-[0.18em] text-[#6a5551]">
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="grid gap-5 lg:grid-cols-3">
