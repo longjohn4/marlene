@@ -6,8 +6,6 @@ import {
   Sparkles,
   Cake,
   CalendarDays,
-  Dumbbell,
-  Home,
 } from "lucide-react";
 
 const HEADER_IMAGE = "/marlene-daniel.jpg";
@@ -95,6 +93,8 @@ export default function LoveOnePager() {
   const [tick, setTick] = useState(Date.now());
   const [countdownMode, setCountdownMode] = useState<"split" | "total">("split");
   const [isBirthdayCardFlipped, setIsBirthdayCardFlipped] = useState(false);
+  const [isMarleneCardFlipped, setIsMarleneCardFlipped] = useState(false);
+  const [isLoveCardFlipped, setIsLoveCardFlipped] = useState(false);
 
   useEffect(() => {
     const interval = window.setInterval(() => setTick(Date.now()), 1000);
@@ -104,9 +104,7 @@ export default function LoveOnePager() {
   const relationshipStart = "2024-10-10T00:00";
 
   const marlene = {
-    name: "Marlene",
     birthday: "1999-05-20",
-    hobbies: ["Pilates", "Poledance", "Fitness"],
     likes: [
       "dein Lachen",
       "deine Empathie",
@@ -155,9 +153,13 @@ export default function LoveOnePager() {
     )
     .sort((a, b) => a.days - b.days);
 
+  const splitLikes = [
+    marlene.likes.slice(0, Math.ceil(marlene.likes.length / 2)),
+    marlene.likes.slice(Math.ceil(marlene.likes.length / 2)),
+  ];
+
   console.assert(typeof together.years === "number", "years should be a number");
-  console.assert(typeof together.seconds === "number", "seconds should be a number");
-  console.assert(daysUntilNextAnnual(relationshipStart) !== null, "anniversary should be calculable");
+  console.assert(typeof totals.totalSeconds === "number", "totals should exist");
   console.assert(highlights.length >= 1, "highlights should exist");
 
   return (
@@ -189,7 +191,7 @@ export default function LoveOnePager() {
         </section>
 
         <section
-          className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm transition hover:shadow-md cursor-pointer"
+          className="cursor-pointer rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm transition hover:shadow-md"
           onClick={() => setCountdownMode((prev) => (prev === "split" ? "total" : "split"))}
         >
           <div className="mb-5 flex items-center justify-center gap-2 font-serif text-3xl text-[#5a423e]">
@@ -240,7 +242,7 @@ export default function LoveOnePager() {
                     index < 3 ? "md:border-r md:border-[#eadfda]" : ""
                   }`}
                 >
-                  <div className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#c47a7b] px-2 break-all">
+                  <div className="break-all px-2 text-4xl md:text-5xl font-serif font-bold tracking-tight text-[#c47a7b]">
                     {value}
                   </div>
                   <div className="mt-3 text-sm uppercase tracking-[0.18em] text-[#6a5551]">
@@ -253,40 +255,83 @@ export default function LoveOnePager() {
         </section>
 
         <section className="grid gap-5 lg:grid-cols-2">
-          <article className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm">
-            <div className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#4d3835]">
-              <User className="h-5 w-5 text-[#c47a7b]" />
-              <span>Marlene</span>
-            </div>
-            <div className="space-y-5 text-[#4f403d]">
-              <div className="flex gap-3">
-                <Cake className="mt-1 h-5 w-5 text-[#b87a78]" />
-                <div>
-                  <p className="font-medium">Geburtstag</p>
-                  <p className="text-lg">20.05.1999</p>
+          <article
+            className="cursor-pointer [perspective:1200px]"
+            onClick={() => setIsMarleneCardFlipped((prev) => !prev)}
+          >
+            <div
+              className={`relative min-h-[260px] rounded-[1.8rem] transition-transform duration-700 [transform-style:preserve-3d] ${
+                isMarleneCardFlipped ? "[transform:rotateY(180deg)]" : ""
+              }`}
+            >
+              <div className="absolute inset-0 rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm [backface-visibility:hidden]">
+                <div className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#4d3835]">
+                  <User className="h-5 w-5 text-[#c47a7b]" />
+                  <span>Marlene</span>
+                </div>
+                <div className="space-y-5 text-[#4f403d]">
+                  <div className="flex gap-3">
+                    <Cake className="mt-1 h-5 w-5 text-[#b87a78]" />
+                    <div>
+                      <p className="font-medium">Geburtstag</p>
+                      <p className="text-lg">20.05.1999</p>
+                    </div>
+                  </div>
+                  <p className="mt-6 text-sm text-[#9d7b76]">Tippe auf die Karte 💖</p>
                 </div>
               </div>
-              <div className="flex gap-3">
-                <Sparkles className="mt-1 h-5 w-5 text-[#b87a78]" />
-                <div>
+
+              <div className="absolute inset-0 rounded-[1.8rem] border border-[#e8ddd7] bg-[#f7e9ea] p-6 shadow-sm [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                <div className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#4d3835]">
+                  <Sparkles className="h-5 w-5 text-[#c47a7b]" />
+                  <span>Das schönste...</span>
+                </div>
+                <div className="flex h-[calc(100%-2rem)] items-center">
                   <p className="leading-relaxed text-[#6b5a56]">{marlene.special}</p>
                 </div>
               </div>
             </div>
           </article>
 
-          <article className="rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm">
-            <div className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#4d3835]">
-              <Heart className="h-5 w-5 text-[#c47a7b]" />
-              <span>Ich liebe an dir</span>
-            </div>
-            <div className="space-y-3 text-[#4f403d]">
-              {marlene.likes.map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <Heart className="mt-1 h-4 w-4 shrink-0 fill-current text-[#d99293]" />
-                  <span>{item}</span>
+          <article
+            className="cursor-pointer [perspective:1200px]"
+            onClick={() => setIsLoveCardFlipped((prev) => !prev)}
+          >
+            <div
+              className={`relative min-h-[260px] rounded-[1.8rem] transition-transform duration-700 [transform-style:preserve-3d] ${
+                isLoveCardFlipped ? "[transform:rotateY(180deg)]" : ""
+              }`}
+            >
+              <div className="absolute inset-0 rounded-[1.8rem] border border-[#e8ddd7] bg-white/90 p-6 shadow-sm [backface-visibility:hidden]">
+                <div className="flex h-full flex-col items-center justify-center text-center">
+                  <div className="mb-4 flex flex-col items-center justify-center text-center font-serif text-2xl text-[#4d3835]">
+                    <Heart className="mb-1 h-5 w-5 text-[#c47a7b]" />
+                    <span>Ich liebe an dir</span>
+                  </div>
+                  <p className="text-sm text-[#9d7b76]">Tippe auf die Karte 💖</p>
                 </div>
-              ))}
+              </div>
+
+              <div className="absolute inset-0 rounded-[1.8rem] border border-[#e8ddd7] bg-[#f7e9ea] p-6 shadow-sm [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                <div className="flex h-full flex-col items-center justify-center text-center">
+                  <div className="mb-4 flex flex-col items-center justify-center text-center font-serif text-2xl text-[#4d3835]">
+                    <Heart className="mb-1 h-5 w-5 text-[#c47a7b]" />
+                    <span>Ich liebe an dir</span>
+                  </div>
+                  <div className="grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-1 text-[#4f403d]">
+                    {splitLikes.map((col, colIndex) => (
+                      <div key={colIndex} className="space-y-1 text-left">
+                        {col.map((item) => (
+                          <div key={item} className="flex items-start gap-2 leading-snug">
+                            <Heart className="mt-1 h-4 w-4 shrink-0 fill-current text-[#d99293]" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         </section>
@@ -298,7 +343,7 @@ export default function LoveOnePager() {
               <span>Unser Familienmitglied</span>
             </div>
 
-            <div className="grid items-center gap-5 md:grid-cols-[180px_1fr_170px]">
+            <div className="grid items-center gap-5 md:grid-cols-[180px_1fr]">
               <div className="mx-auto h-40 w-40 overflow-hidden rounded-full bg-[#ead7c8] shadow-inner">
                 <img src="/camillo.jpg" alt="Don Camillo" className="h-full w-full object-cover" />
               </div>
@@ -312,14 +357,6 @@ export default function LoveOnePager() {
                 </div>
                 <div className="h-px w-12 bg-[#d9c6bf]" />
                 <p className="max-w-sm text-lg leading-relaxed text-[#6b5a56]">{pet.description}</p>
-              </div>
-
-              <div className="text-center text-[#7a605b]">
-                <Home className="mx-auto mb-3 h-20 w-20 text-[#9b6c66]" />
-                <p className="text-2xl leading-snug">Ein Zuhause.</p>
-                <p className="text-2xl leading-snug">Eine Familie.</p>
-                <p className="text-2xl leading-snug">Wir.</p>
-                <div className="mt-2 text-2xl text-[#d08a8b]">♡</div>
               </div>
             </div>
           </article>
